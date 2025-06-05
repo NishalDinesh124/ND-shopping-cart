@@ -124,7 +124,7 @@ const AddProductsPage = () => {
     console.log('Submitted Product:', formData);
     const res = await axios.post(addProductsRoute, { formData })
     if (res.data)
-      toast.done("Product added succesfully")
+      toast.success("Product added succesfully")
     setFormData({
       name: '',
       category: 'Laptops',
