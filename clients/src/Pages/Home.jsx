@@ -14,8 +14,6 @@ const Wrapper = styled.div`
 
 const MainContent = styled.main`
   flex: 1;
-  padding: 2rem 0em;
-  margin-right: 1.5rem;
   max-height: 100vh;
   overflow: auto;
 `;
