@@ -14,7 +14,8 @@ const Wrapper = styled.div`
 
 const MainContent = styled.main`
   flex: 1;
-  padding: 2rem 3em;
+  padding: 2rem 0em;
+  margin-right: 1.5rem;
   max-height: 100vh;
   overflow: auto;
 `;
@@ -52,6 +53,9 @@ const FilterButton = styled.button`
 
 const ProductGrid = styled.div`
   display: grid;
+  overflow: auto;
+  max-height: 500px;
+  padding: 5em 3em;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 4rem;
   margin-bottom: 4rem;

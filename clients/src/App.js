@@ -26,6 +26,25 @@ const GlobalStyle = createGlobalStyle`
   #root {
     max-height: 100vh;
   }
+  /* Slim Webkit Scrollbar for Chrome, Edge, Safari */
+  ::-webkit-scrollbar {
+    width: 0px;
+    height: 2px;
+  }
+
+  /* ::-webkit-scrollbar-track {
+    background: ${({ theme }) => theme.colors.white};
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: grey;
+    border-radius: 3px;
+    border: 1px solid ${({ theme }) => theme.colors.white};
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: ${({ theme }) => theme.colors.primaryHover || "#20ac66"};
+  } */
 `;
 const App = () => {
   return (
