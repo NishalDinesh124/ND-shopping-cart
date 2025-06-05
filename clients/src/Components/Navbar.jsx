@@ -118,7 +118,7 @@ const Navbar = () => {
 
   return (
     <NavbarContainer>
-      <Logo to="/">ShopCart <span>   .</span><GiShoppingCart /></Logo>
+      <Logo to="/">NDCart <span>   .</span><GiShoppingCart /></Logo>
       <MenuButton onClick={toggleMenu}>
         {menuOpen ? <FiX /> : <FiMenu />}
       </MenuButton>

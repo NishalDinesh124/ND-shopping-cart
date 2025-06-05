@@ -13,10 +13,10 @@ font-family: Inter;
   height: 100vh;
   position: fixed;
   left: ${({ open }) => (open ? '0' : '-100%')};
-  top: 4em;
+  top: 0em;
   transition: left 0.3s ease;
   z-index: 1000;
-  padding-top: 2rem;
+  padding-top: 4rem;
 
  
 `;
@@ -86,7 +86,7 @@ const AdminSidebar = () => {
       </SidebarToggle>
 
       <SidebarWrapper open={isOpen}>
-        <Logo to="/admin">ShopCart <span>   .</span><GiShoppingCart /></Logo>
+        <Logo to="/admin">NDCart <span>   .</span><GiShoppingCart /></Logo>
         <NavList>
           <NavItem to='/admin' ><FaTachometerAlt /> Dashboard</NavItem>
           <NavItem to='/admin/orders'><FaShoppingCart /> Orders</NavItem>
