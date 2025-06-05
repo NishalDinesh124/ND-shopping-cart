@@ -4,12 +4,13 @@ import axios from "axios";
 import { FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { deleteUserRoute, getAllUsersRoute } from "../../Utils/APIRoutes";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   font-family: Inter;
   padding: 2rem;
-  max-width: 1200px;
-  margin: auto;
+  background: ${({ theme }) => theme.colors.white};
+  min-height: 100vh;
 `;
 
 const Title = styled.h2`
@@ -19,35 +20,46 @@ const Title = styled.h2`
   text-align: center;
 `;
 
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  background: ${({ theme }) => theme.colors.white};
+const CardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+`;
+
+const UserCard = styled.div`
+  background: #fff;
+  border: 1px solid ${({ theme }) => theme.colors.lightGray};
   border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  transition: transform 0.3s;
 
-  th, td {
-    padding: 1rem;
-    text-align: left;
+  &:hover {
+    transform: scale(1.01);
   }
+`;
 
-  th {
-    background: ${({ theme }) => theme.colors.primaryLight || "#f5f5f5"};
-    color: ${({ theme }) => theme.colors.dark};
-  }
+const Info = styled.div`
+  margin-bottom: 0.8rem;
+`;
 
-  tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
+const Label = styled.span`
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.dark};
+`;
+
+const Value = styled.span`
+  margin-left: 0.4rem;
+  color: ${({ theme }) => theme.colors.gray};
 `;
 
 const DeleteBtn = styled.button`
   background: none;
   border: none;
   color: #e11d48;
-  cursor: pointer;
   font-size: 1.1rem;
+  cursor: pointer;
+  margin-top: 1rem;
 
   &:hover {
     opacity: 0.8;
@@ -55,11 +67,12 @@ const DeleteBtn = styled.button`
 `;
 
 const AdminUsersPage = () => {
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get(getAllUsersRoute) 
+      const res = await axios.get(getAllUsersRoute);
       setUsers(res.data);
     } catch (err) {
       toast.error("Failed to load users.");
@@ -70,49 +83,38 @@ const AdminUsersPage = () => {
     const confirm = window.confirm("Are you sure you want to delete this user?");
     if (!confirm) return;
     try {
-      await axios.post(deleteUserRoute,{userId}); 
+      await axios.post(deleteUserRoute, { userId });
       toast.success("User deleted");
-      setUsers(users.filter(user => user._id !== userId));
+      setUsers(users.filter((user) => user._id !== userId));
     } catch (err) {
       toast.error("Delete failed");
     }
   };
 
   useEffect(() => {
+    const admin = localStorage.getItem("cart-app-admin");
+    if (!admin) {
+      navigate("/admin/login");
+      return;
+    }
     fetchUsers();
-  }, []);
+  }, [navigate]);
 
   return (
     <Container>
       <Title>All Users</Title>
-      <Table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Date Joined</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user, idx) => (
-            <tr key={user._id}>
-              <td>{idx + 1}</td>
-              <td>{user.username}</td>
-              <td>{user.email}</td>
-              <td>{user.role}</td>
-              <td>{new Date(user.createdAt).toLocaleDateString()}</td>
-              <td>
-                <DeleteBtn onClick={() => handleDelete(user._id)}>
-                  <FaTrash />
-                </DeleteBtn>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <CardGrid>
+        {users.map((user, idx) => (
+          <UserCard key={user._id}>
+            <Info><Label>#</Label><Value>{idx + 1}</Value></Info>
+            <Info><Label>Name:</Label><Value>{user.username}</Value></Info>
+            <Info><Label>Email:</Label><Value>{user.email}</Value></Info>
+            <Info><Label>Role:</Label><Value>{user.role}</Value></Info>
+            <Info><Label>Date Joined:</Label><Value>{new Date(user.createdAt).toLocaleDateString()}</Value></Info>
+            <DeleteBtn onClick={() => handleDelete(user._id)}><FaTrash /> Delete</DeleteBtn>
+          </UserCard>
+        ))}
+      </CardGrid>
     </Container>
   );
 };

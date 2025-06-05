@@ -152,7 +152,7 @@ const PlaceOrder = () => {
     } else {
       getCartItems(); // Fetch first
     }
-  }, []);
+  }, [navigate]);
 
 
   const [formData, setFormData] = useState({
@@ -195,8 +195,9 @@ const PlaceOrder = () => {
     try {
       const res = await axios.post(placeOrderRoute, { orderData });
       if (res.data.status) {
+        const placeordercall = true
         toast.info(res.data.msg);
-        navigate('/order-success')
+        navigate('/order-success',{state:{placeordercall}})
       }
     } catch (err) {
       toast.error("An error occurred while placing order");

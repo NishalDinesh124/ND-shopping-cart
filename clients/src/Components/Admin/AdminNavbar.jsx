@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiMenu, FiX } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 
 const NavbarContainer = styled.nav`
   font-family: Inter;
@@ -70,9 +71,16 @@ const MenuButton = styled.button`
 `;
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => setMenuOpen((prev) => !prev);
+
+  const handleLogout=async()=>{
+    toast.info("Logged out succesfully")
+    localStorage.clear('cart-app-admin');
+    navigate('/admin');
+  }
 
   return (
     <NavbarContainer>
@@ -84,7 +92,7 @@ const Navbar = () => {
         <NavLink to="/admin" onClick={() => setMenuOpen(false)}>Home</NavLink>
         <NavLink to="/admin/orders" onClick={() => setMenuOpen(false)}>Orders</NavLink>
         <NavLink to="/admin/users" onClick={() => setMenuOpen(false)}>Users</NavLink>
-        <NavLink to="/admin/logOut" onClick={() => setMenuOpen(false)}>LogOut</NavLink>
+        <NavLink onClick={handleLogout}>LogOut</NavLink>
       </NavLinks>
     </NavbarContainer>
   );

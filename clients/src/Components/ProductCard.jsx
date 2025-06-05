@@ -32,15 +32,16 @@ const FloatingCartButton = styled.button`
 const CardWrapper = styled.div`
   background: ${({ theme }) => theme.white};
   border-radius: 16px;
-  padding: 5rem 1rem 3rem;
- box-shadow: 3px -1px 24px #10b981b0;
+  padding: 5rem 0rem 3rem;
+ box-shadow: 3px -1px 24px #10b98152;
  background-color: #ffffff;
   position: relative;
   overflow: visible;
   text-align: center;
   transition: transform 0.3s ease;
   width: 100%;
-  max-width: 300px;
+ 
+  min-width: 282px;
   margin: auto;
 
   &:hover ${FloatingCartButton} {

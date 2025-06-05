@@ -80,6 +80,7 @@ const NavLink = styled(Link)`
   text-decoration: none;
   font-weight: 700;
   border-bottom: solid 3px white;
+  padding: 0.6rem 0rem;
   svg{
     font-size: 25px;
   }
@@ -118,7 +119,7 @@ const Navbar = () => {
 
   return (
     <NavbarContainer>
-      <Logo to="/">NDCart <span>   .</span><GiShoppingCart /></Logo>
+      <Logo to="/">NDCart<GiShoppingCart /></Logo>
       <MenuButton onClick={toggleMenu}>
         {menuOpen ? <FiX /> : <FiMenu />}
       </MenuButton>

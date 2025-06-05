@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaCheckCircle } from 'react-icons/fa';
 
 const fadeInUp = keyframes`
@@ -59,6 +59,15 @@ const HomeButton = styled(Link)`
 `;
 
 const OrderSuccessPage = () => {
+  const navigate = useNavigate();
+   const location = useLocation();
+  const call = location.state?.placeordercall;
+  useEffect(()=>{
+    if(!call){
+      navigate('/')
+      return;
+    }
+  },[call,navigate])
   return (
     <SuccessContainer>
       <SuccessIcon />

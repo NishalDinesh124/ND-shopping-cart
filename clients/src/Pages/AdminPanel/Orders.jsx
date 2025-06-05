@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { getOrdersRoute } from '../../Utils/APIRoutes';
+import { useNavigate } from 'react-router-dom';
 
 const PageWrapper = styled.div`
   max-width: 1200px;
@@ -57,6 +58,7 @@ const ProductItem = styled.li`
 `;
 
 const AdminOrdersPage = () => {
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
 
   const fetchOrders = async () => {
@@ -69,8 +71,13 @@ const AdminOrdersPage = () => {
   };
 
   useEffect(() => {
+    const admin = localStorage.getItem('cart-app-admin')
+    if(!admin){
+      navigate('/admin/login')
+      return;
+    }
     fetchOrders();
-  }, []);
+  }, [navigate]);
 
   return (
     <PageWrapper>
