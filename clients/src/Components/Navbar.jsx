@@ -9,7 +9,6 @@ import { MdOutlineAdminPanelSettings } from "react-icons/md";
 
 const NavbarContainer = styled.nav`
   font-family: Inter;
-  overflow: visible;
   background-color: ${({ theme }) => theme.colors.white};
   padding: 1rem 2rem;
   display: flex;
@@ -17,17 +16,20 @@ const NavbarContainer = styled.nav`
   align-items: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
-  z-index: 10; /* Make sure the navbar is above the content */
+  z-index: 10;
 `;
 
 const Logo = styled(Link)`
   font-size: 1.5rem;
   font-weight: bold;
   display: flex;
+  align-items: center;
   color: ${({ theme }) => theme.colors.primary};
   text-decoration: none;
-  svg{
-    font-size: 30px;
+
+  svg {
+    font-size: 28px;
+    margin-left: 0.3rem;
   }
 `;
 
@@ -35,8 +37,8 @@ const NavLinks = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== 'isopen'
 })`
   display: flex;
-  gap: 1.5rem;
-  transition: all 0.3s ease-in-out;
+  gap: 1.2rem;
+  align-items: center;
 
   @media (max-width: 768px) {
     position: fixed;
@@ -46,57 +48,70 @@ const NavLinks = styled.div.withConfig({
     background-color: ${({ theme }) => theme.colors.primary};
     flex-direction: column;
     align-items: center;
-    padding: 1rem 0;
+    padding: 1.5rem 0;
     display: ${({ isopen }) => (isopen ? 'flex' : 'none')};
     z-index: 9999;
     visibility: ${({ isopen }) => (isopen ? 'visible' : 'hidden')};
     opacity: ${({ isopen }) => (isopen ? 1 : 0)};
-    border-bottom-left-radius: 5em;
-    border-bottom-right-radius: 5em;
+    border-bottom-left-radius: 3em;
+    border-bottom-right-radius: 3em;
+    gap: 1.5rem;
   }
 `;
 
 const SearchBar = styled.input`
-padding: 0.6rem 1rem;
-    border: solid 2px ${({ theme }) => theme.colors.primary};
-    border-radius: 21px;
-    font-size: 1rem;
-    outline: none;
+  padding: 0.5rem 1rem;
+  border: 2px solid ${({ theme }) => theme.colors.primary};
+  border-radius: 999px;
+  font-size: 0.95rem;
+  outline: none;
+  width: 200px;
+  transition: all 0.3s;
 
-    @media (max-width: 768px) {
-      border: solid 2px ${({ theme }) => theme.colors.white};
-      background: transparent;
-      color:${({ theme }) => theme.colors.white};
+  &:focus {
+    border-color: ${({ theme }) => theme.colors.primaryHover || '#20ac66'};
+    box-shadow: 0 0 0 2px rgba(32, 172, 102, 0.2);
+  }
 
-      &::placeholder {
-        color:${({ theme }) => theme.colors.white}; 
-        opacity: 1;
-      }
+  @media (max-width: 768px) {
+    width: 80%;
+    background: transparent;
+    border-color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.white};
+
+    &::placeholder {
+      color: ${({ theme }) => theme.colors.white};
+      opacity: 0.7;
     }
+  }
 `;
 
 const NavLink = styled(Link)`
   color: ${({ theme }) => theme.colors.primary};
   text-decoration: none;
   font-weight: 700;
-  border-bottom: solid 3px white;
-  padding: 0.6rem 0rem;
-  svg{
-    font-size: 25px;
+  border-bottom: 3px solid white;
+  padding: 0.4rem 0;
+  display: flex;
+  align-items: center;
+
+  svg {
+    font-size: 22px;
   }
 
   &:hover {
-   border-bottom: solid 3px ${({ theme }) => theme.colors.primary};
+    border-bottom: 3px solid ${({ theme }) => theme.colors.primary};
   }
-   @media (max-width: 768px) {
-     color: ${({ theme }) => theme.colors.textLight};
-     border-bottom: solid 3px ${({ theme }) => theme.colors.primary};
-     &:hover {
-   border-bottom: solid 3px ${({ theme }) => theme.colors.white};
-  }
+
+  @media (max-width: 768px) {
+    color: ${({ theme }) => theme.colors.textLight};
+    border-bottom: 3px solid ${({ theme }) => theme.colors.primary};
+
+    &:hover {
+      border-bottom: 3px solid ${({ theme }) => theme.colors.white};
+    }
   }
 `;
-
 
 const MenuButton = styled.button`
   display: none;
@@ -112,7 +127,7 @@ const MenuButton = styled.button`
 `;
 
 const Navbar = () => {
-  const {user, search, setSearch } = useAuth()
+  const { user, search, setSearch } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => setMenuOpen((prev) => !prev);
@@ -134,17 +149,11 @@ const Navbar = () => {
         <NavLink to="/cart" onClick={() => setMenuOpen(false)}><IoCartOutline /></NavLink>
         <NavLink to="/" onClick={() => setMenuOpen(false)}><IoHeartOutline /></NavLink>
         {user ? (
-  <>
-    <NavLink to={'/acc-details'}>
-      <IoPersonOutline />
-    </NavLink>
-  </>
-) : (
-  <NavLink to="/auth" onClick={() => setMenuOpen(false)}>Login</NavLink>
-)}
-
-          <NavLink to="/admin" onClick={() => setMenuOpen(false)}><MdOutlineAdminPanelSettings/></NavLink>
-
+          <NavLink to="/acc-details" onClick={() => setMenuOpen(false)}><IoPersonOutline /></NavLink>
+        ) : (
+          <NavLink to="/auth" onClick={() => setMenuOpen(false)}>Login</NavLink>
+        )}
+        <NavLink to="/admin" onClick={() => setMenuOpen(false)}><MdOutlineAdminPanelSettings /></NavLink>
       </NavLinks>
     </NavbarContainer>
   );

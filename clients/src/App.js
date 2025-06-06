@@ -49,7 +49,7 @@ const GlobalStyle = createGlobalStyle`
 const App = () => {
   return (
     <>
-      <ToastContainer position="bottom-right" autoClose={3000}/>
+      <ToastContainer position="top" autoClose={3000}/>
     <AuthProvider>
       <GlobalStyle />
       <BrowserRouter>
