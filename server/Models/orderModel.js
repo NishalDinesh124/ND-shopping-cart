@@ -15,6 +15,7 @@ const OrdersSchema = new mongoose.Schema({
   ],
   address: {type: Object, required: true},
   paymentMethod: String, // "COD" or "Online"
+  paymentId : String,
   status: { type: String, default: "Pending" },
   orderedAt: { type: Date, default: Date.now },
 }) 

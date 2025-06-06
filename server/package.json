@@ -7,6 +7,8 @@
     "helmet": "^8.1.0",
     "mongoose": "^8.15.1",
     "morgan": "^1.10.0",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "razorpay": "^2.9.6",
+    "shortid": "^2.2.17"
   }
 }

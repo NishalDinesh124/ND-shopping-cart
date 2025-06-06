@@ -3,6 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const userRoute = require("./Routes/user"); 
 const adminRoute = require("./Routes/admin")
+const paymentRoute = require("./Routes/payment")
 const bodyParser = require("body-parser");
 const dotenv = require('dotenv');
 dotenv.config();;
@@ -12,7 +13,7 @@ const app = express();
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({
-  origin: 'https://nd-shopping-cart.vercel.app',
+  origin: 'http://localhost:3000',
   credentials: true,
 }));
 app.use(express.json());
@@ -30,6 +31,7 @@ const startServer = async () => {
     // Routes
     app.use("/api/auth", userRoute);
     app.use("/api/admin", adminRoute);
+    app.use("/api/payment", paymentRoute);
 
     // Start listening AFTER DB connects
     app.listen(PORT, () => {

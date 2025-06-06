@@ -40,7 +40,7 @@ const getCartItems = async (passedUser = user) => {
   }
 };
 
-  const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0); /// total price of cart items for place order and cart page
+  var total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0); /// total price of cart items for place order and cart page
   useEffect(() => {
     getCurrentUser()
   }, [])

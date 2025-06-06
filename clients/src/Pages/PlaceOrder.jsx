@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useAuth } from '../Context/AuthContext';
-import { placeOrderRoute } from '../Utils/APIRoutes';
+import { paymentRoute, placeOrderRoute } from '../Utils/APIRoutes';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -173,6 +173,75 @@ const PlaceOrder = () => {
   };
 
 
+  /// === Razorpay function ===///
+
+  const loadScript = (src) => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  };
+
+  const loadRazorpay = async (amount) => {
+    const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+
+    if (!res) {
+      alert("Razorpay SDK failed to load. Are you online?");
+      return;
+    }
+
+    const orderRes = await axios.post(paymentRoute, { amount });
+    const { id: order_id, currency } = orderRes.data;
+
+    const options = {
+      key: "rzp_test_h8KeIrbipUT13H",
+      amount: amount * 100,
+      currency,
+      name: "ND Cart",
+      description: "Order Payment",
+      order_id,
+      handler: async function (response) {
+        // ✅ Razorpay Payment Success
+
+        const orderData = {
+          userId: user._id,
+          address: formData,
+          paymentMethod: "online",
+          paymentId: response.razorpay_payment_id,
+          products: isBuyNow ? [buyNowProduct] : cartItems,
+        };
+
+        try {
+          const placeRes = await axios.post(placeOrderRoute, { orderData });
+          if (placeRes.data.status) {
+            const placeordercall = true;
+            navigate('/order-success', { state: { placeordercall } });
+          }
+        } catch (err) {
+          console.error("Error placing order after Razorpay success:", err);
+          toast.error("Order failed to be saved.");
+        }
+      },
+      prefill: {
+        name: "Nishal Dinesh",
+        email: "test@example.com",
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  };
+
   // === Handling order placing ===///
 
   const handlePlaceOrder = async () => {
@@ -192,16 +261,34 @@ const PlaceOrder = () => {
       products: isBuyNow ? [buyNowProduct] : cartItems,
     };
 
-    try {
-      const res = await axios.post(placeOrderRoute, { orderData });
-      if (res.data.status) {
-        const placeordercall = true
-        toast.info(res.data.msg);
-        navigate('/order-success',{state:{placeordercall}})
+    if (paymentMethod === 'cod') {
+      try {
+        const res = await axios.post(placeOrderRoute, { orderData, isBuyNow });
+        if (res.data.status) {
+          const placeordercall = true
+          navigate('/order-success', { state: { placeordercall } })
+        }
+      } catch (err) {
+        console.log("An error occured while placing order", err);
+
       }
-    } catch (err) {
-      toast.error("An error occurred while placing order");
+
+    } else {
+      try {
+        if (isBuyNow) {
+          loadRazorpay(buyNowProduct.price) // Only take that product price if buy now is clicked
+        } else {
+          loadRazorpay(total) // take total cart price
+        }
+
+      } catch (err) {
+        console.log("An error occured with payment");
+
+      }
+
+
     }
+
   };
 
   return (

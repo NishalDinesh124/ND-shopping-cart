@@ -130,16 +130,22 @@ module.exports.deleteCartItem = async (req, res, next) => {
 
 module.exports.placeOrder= async (req, res, next) => {
     try {
-        const{userId, products, address, paymentMethod} = req.body.orderData;
+        const{userId, products, address, paymentMethod, paymentId} = req.body.orderData;
+        const isBuyNow = req.body.isBuyNow
+        console.log(isBuyNow);
+        
+        console.log(userId);
+        
         await Orders.create({
             userId,
             products,
             address,
+            paymentId,
             paymentMethod
         })
-        if(products.length>1){
-            await Cart.deleteMany({user:userId})
-        }
+       if(!isBuyNow){
+        await Cart.deleteMany({user:userId})
+       }
         return res.json({msg: "Order placed succesfully", status: true})    
     } catch (err) {
         console.log("An error occured while placing order", err);

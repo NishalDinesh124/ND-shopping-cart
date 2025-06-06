@@ -51,7 +51,7 @@ const App = () => {
     <>
       <ToastContainer position="top-left" autoClose={3000}/>
     <AuthProvider>
-      <GlobalStyle />
+      <GlobalStyle/>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
