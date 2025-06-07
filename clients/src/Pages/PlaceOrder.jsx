@@ -234,7 +234,7 @@ const PlaceOrder = () => {
         email: "test@example.com",
       },
       theme: {
-        color: "#3399cc",
+        color: "#10B981",
       },
     };
 
