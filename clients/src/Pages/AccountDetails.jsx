@@ -68,7 +68,7 @@ const AccountDetails = () => {
       <Heading>My Account</Heading>
       <Info><strong>Name:</strong> {user.username}</Info>
       <Info><strong>Email:</strong> {user.email}</Info>
-      <Info><strong>Joined:</strong> {new Date(user.createdAt).toLocaleDateString()}</Info>
+      <Info><strong>Joined:</strong> {new Date(user.createdAt).toLocaleString()}</Info>
       <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
     </Container>
   );
