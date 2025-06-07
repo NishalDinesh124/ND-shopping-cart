@@ -141,13 +141,13 @@ const PlaceOrder = () => {
   const [paymentMethod, setPaymentMethod] = useState('cod');
   const location = useLocation();
   const buyNowProduct = location.state?.product;
-  const isBuyNow = !!buyNowProduct;  //// If the call is form buy now button show only that particular product else show all cart items
+  const isBuyNow = !!buyNowProduct;  //// If the call is from buy now button show only that particular product else show all cart items
 
 
   useEffect(() => {
     const user = localStorage.getItem('cart-app-user');
     if (!user) {
-      toast.dark('You need to login to buy products');
+      toast.info('You need to login to buy products');
       navigate('/auth');
     } else {
       getCartItems(); // Fetch first
@@ -371,12 +371,12 @@ const PlaceOrder = () => {
         {/* If the call is form buy now button show only that particular product else show all cart items */}
         <ItemBox>{isBuyNow ? (<SummaryItem key={buyNowProduct._id}>
           <span>{buyNowProduct.name}</span>
-          <span>${buyNowProduct.price}</span>
+          <span>₹{buyNowProduct.price}</span>
         </SummaryItem>) : (cartItems.map((item) => (
 
           <SummaryItem key={item._id}>
             <span>{item.name}</span>
-            <span>${item.price} x {item.quantity}</span>
+            <span>₹{item.price} x {item.quantity}</span>
           </SummaryItem>
 
 
@@ -389,10 +389,10 @@ const PlaceOrder = () => {
 
         {isBuyNow ? <Total>
           <span>Total: </span>
-          <span>${buyNowProduct.price}</span>
+          <span>₹{buyNowProduct.price}</span>
         </Total> : <Total>
           <span>Total: </span>
-          <span>${total}</span>
+          <span>₹{total}</span>
         </Total>}
 
 

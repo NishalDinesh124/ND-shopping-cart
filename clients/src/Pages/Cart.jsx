@@ -271,7 +271,7 @@ if (cartItems.length === 0) {
               <ItemImage src={item.img} alt={item.name} />
               <ItemDetails>
                 <ItemName>{item.name}</ItemName>
-                <ItemPrice>${(item.price * item.quantity).toFixed(2)}</ItemPrice>
+                <ItemPrice>₹{(item.price * item.quantity).toFixed(2)}</ItemPrice>
               </ItemDetails>
             </ItemInfo>
 
@@ -289,7 +289,7 @@ if (cartItems.length === 0) {
       </CartItems>
 
       <CartSummary>
-        <Subtotal>Subtotal: ${total.toFixed(2)}</Subtotal>
+        <Subtotal>Subtotal: ₹{total.toFixed(2)}</Subtotal>
         <CheckoutButton to={'/place-order'}>Place Order</CheckoutButton>
       </CartSummary>
     </CartContainer>

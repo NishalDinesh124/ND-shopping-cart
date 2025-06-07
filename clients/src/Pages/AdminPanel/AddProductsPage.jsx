@@ -160,7 +160,7 @@ const AddProductsPage = () => {
           </div>
 
           <div className='field'>
-            <Label>Price ($)</Label>
+            <Label>Price (₹)</Label>
             <Input
               type="number"
               name="price"

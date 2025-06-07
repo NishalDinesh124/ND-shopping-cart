@@ -168,7 +168,7 @@ const ProductDetailPage = () => {
 
         <Details>
           <Title>{product.name}</Title>
-          <Price>${product.price.toFixed(2)}</Price>
+          <Price>₹{product.price.toFixed(2)}</Price>
           <Description>{product.desc}</Description>
           <Rating>
             {Array.from({ length: 5 }, (_, i) => (

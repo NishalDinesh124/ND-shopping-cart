@@ -141,7 +141,7 @@ const ProductCard = ({ product}) => {
       </ImageWrapper>
       <Info >
         <Name>{product.name}</Name>
-        <Price>${product.price.toFixed(2)}</Price>
+        <Price>₹{product.price.toFixed(2)}</Price>
         <ButtonGroup>
 
           <Button to={'/place-order'} state={{product}}>Buy Now</Button>
