@@ -1,12 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import ProductCard from '../Components/ProductCard';
+import React, { useEffect, useState, Suspense, lazy } from 'react';
+import styled, { keyframes } from 'styled-components';
 import axios from 'axios';
 import { getItemsRoute } from '../Utils/APIRoutes';
 import { useAuth } from '../Context/AuthContext';
 
-const Wrapper = styled.div`
+// Lazy load ProductCard
+const ProductCard = lazy(() => import('../Components/ProductCard'));
 
+// Spinner animation
+const spin = keyframes`
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+`;
+
+const Spinner = styled.div`
+  border: 4px solid ${({ theme }) => theme.colors.lightGray};
+  border-top: 4px solid ${({ theme }) => theme.colors.primary};
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: ${spin} 1s linear infinite;
+  margin: 5rem auto;
+`;
+
+const Wrapper = styled.div`
   display: flex;
   font-family: Inter;
   background: ${({ theme }) => theme.colors.white};
@@ -52,7 +69,7 @@ const FilterButton = styled.button`
 const ProductGrid = styled.div`
   display: grid;
   overflow: auto;
-  max-height: 630px;
+  max-height: 340px;
   padding: 5em 3em;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 4rem;
@@ -63,10 +80,17 @@ const Home = () => {
   const { search, user } = useAuth();
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [loading, setLoading] = useState(true);
 
   const getItems = async () => {
-    const res = await axios.get(getItemsRoute);
-    setProducts(res.data.items);
+    try {
+      const res = await axios.get(getItemsRoute);
+      setProducts(res.data.items);
+    } catch (err) {
+      console.error("Error fetching products", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -83,9 +107,8 @@ const Home = () => {
   return (
     <Wrapper>
       <MainContent>
-        <Title></Title>
+        <Title>Our Products</Title>
 
-        {/* CATEGORY FILTER */}
         <FilterContainer>
           {['all', 'Laptops', 'Mobile Phones', 'Smartwatches'].map((category) => (
             <FilterButton
@@ -100,11 +123,17 @@ const Home = () => {
           ))}
         </FilterContainer>
 
-        <ProductGrid>
-          {filteredProducts.map((product) => (
-            <ProductCard key={product._id} product={product} user={user} />
-          ))}
-        </ProductGrid>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <Suspense fallback={<Spinner />}>
+            <ProductGrid>
+              {filteredProducts.map((product) => (
+                <ProductCard key={product._id} product={product} user={user} />
+              ))}
+            </ProductGrid>
+          </Suspense>
+        )}
       </MainContent>
     </Wrapper>
   );
