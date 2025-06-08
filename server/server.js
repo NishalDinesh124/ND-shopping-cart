@@ -13,7 +13,7 @@ const app = express();
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({
-  origin: 'https://nd-shopping-cart.vercel.app',
+  origin: 'http://localhost:3000',
   credentials: true,
 }));
 app.use(express.json());

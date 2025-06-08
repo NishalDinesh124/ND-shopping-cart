@@ -46,16 +46,15 @@ const NavLinks = styled.div.withConfig({
     left: 0.5em;
     right: 0.5em;
     background-color: ${({ theme }) => theme.colors.primary};
-    flex-direction: column;
     align-items: center;
-    padding: 1.5rem 0;
+    padding: 1.5rem 0.6rem;
     display: ${({ isopen }) => (isopen ? 'flex' : 'none')};
     z-index: 9999;
     visibility: ${({ isopen }) => (isopen ? 'visible' : 'hidden')};
     opacity: ${({ isopen }) => (isopen ? 1 : 0)};
     border-bottom-left-radius: 3em;
     border-bottom-right-radius: 3em;
-    gap: 1.5rem;
+    gap: 1rem;
   }
 `;
 
