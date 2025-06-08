@@ -1,18 +1,32 @@
-import React, { useEffect} from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import styled, { keyframes } from 'styled-components';
 import { FaTrashAlt } from 'react-icons/fa';
 import { GiShoppingCart } from "react-icons/gi";
 import axios from 'axios';
-import { deleteCartRoute,updateCartRoute } from '../Utils/APIRoutes';
+import { deleteCartRoute, updateCartRoute } from '../Utils/APIRoutes';
 import { toast } from 'react-toastify';
 import { useAuth } from '../Context/AuthContext';
-import {debounce } from'lodash'
+import { debounce } from 'lodash';
 import { Link, useNavigate } from 'react-router-dom';
 
+/// === Spinner === ///
+const spin = keyframes`
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+`;
+
+const Spinner = styled.div`
+  margin: 5rem auto;
+  border: 4px solid ${({ theme }) => theme.colors.lightGray};
+  border-top: 4px solid ${({ theme }) => theme.colors.primary};
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: ${spin} 1s linear infinite;
+`;
 
 /// === Styled components === ///
 const EmptyContainer = styled.div`
-font-family: Inter;
   text-align: center;
   padding: 3rem 2rem;
   border-radius: 1rem;
@@ -53,10 +67,8 @@ const ShopButton = styled.button`
   }
 `;
 
-
 const CartContainer = styled.div`
   max-width: 1100px;
-  font-family: Inter;
   margin: 3rem auto;
   padding: 2rem;
   background: ${({ theme }) => theme.colors.white};
@@ -65,6 +77,7 @@ const CartContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  font-family: Inter;
 `;
 
 const CartTitle = styled.h2`
@@ -165,7 +178,7 @@ const Subtotal = styled.h3`
 `;
 
 const CheckoutButton = styled(Link)`
-text-decoration: none;
+  text-decoration: none;
   background-color: ${({ theme }) => theme.colors.primary};
   border: none;
   padding: 0.75rem 1.5rem;
@@ -179,88 +192,84 @@ text-decoration: none;
   }
 `;
 
+/// === Component === ///
 const CartPage = () => {
-  const {user, getCartItems, cartItems, setCartItems, total} = useAuth();
-  const navigate = useNavigate(); 
-  
-
-
-
+  const { user, getCartItems, cartItems, setCartItems, total } = useAuth();
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
-  const user = localStorage.getItem('cart-app-user')
-  if(!user){
-    navigate('/auth')
-  }else{
-getCartItems();
-  }
-    
+    const u = localStorage.getItem('cart-app-user');
+    if (!u) {
+      navigate('/auth');
+    } else {
+      setLoading(true);
+      getCartItems().finally(() => setLoading(false));
+    }
   }, [navigate]);
-/// === Deleting cart items function === ///
 
-const deleteCartItem = async(itemId)=>{
-  const res = await axios.post(deleteCartRoute,{itemId, user: user._id})
-  if(res.data.status)
-    getCartItems();
-    toast.info(res.data.msg)
-}
-// === Updating quantity functions === ///
-  const updateQuantity = 
-    debounce(async (itemId, newQty) => {
-      try {
-        const res = await axios.post(updateCartRoute, {
-          itemId,
-          userId: user._id,
-          newQuantity: newQty,
-        });
-        if(res.data.status)
-          toast.info(res.data.msg)
-        getCartItems();
-      } catch (err) {
-        toast.error("An error occurred while updating cart");
-      }
-    }, 900)
+  const deleteCartItem = async (itemId) => {
+    const res = await axios.post(deleteCartRoute, { itemId, user: user._id });
+    if (res.data.status) {
+      toast.info(res.data.msg);
+      getCartItems();
+    }
+  };
+
+  const updateQuantity = debounce(async (itemId, newQty) => {
+    try {
+      const res = await axios.post(updateCartRoute, {
+        itemId,
+        userId: user._id,
+        newQuantity: newQty,
+      });
+      if (res.data.status) toast.info(res.data.msg);
+      getCartItems();
+    } catch (err) {
+      toast.error('An error occurred while updating cart');
+    }
+  }, 900);
 
   const incrementQty = (itemId) => {
+    const updatedQty = (cartItems.find((i) => i._id === itemId)?.quantity || 0) + 1;
     setCartItems((prev) =>
       prev.map((item) =>
-        item._id === itemId
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
+        item._id === itemId ? { ...item, quantity: updatedQty } : item
       )
     );
-    const updatedQty = cartItems.find(i => i._id === itemId)?.quantity + 1 ;
-    updateQuantity(itemId ,updatedQty);
+    updateQuantity(itemId, updatedQty);
   };
 
   const decrementQty = (itemId) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item._id === itemId && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
-    );
-    const updatedQty = cartItems.find(i => i._id === itemId)?.quantity - 1;
-    updateQuantity(itemId, updatedQty);
+    const currentQty = cartItems.find((i) => i._id === itemId)?.quantity || 1;
+    if (currentQty > 1) {
+      const updatedQty = currentQty - 1;
+      setCartItems((prev) =>
+        prev.map((item) =>
+          item._id === itemId ? { ...item, quantity: updatedQty } : item
+        )
+      );
+      updateQuantity(itemId, updatedQty);
+    }
   };
-  
 
-  
-if (cartItems.length === 0) {
-  return (
-    <CartContainer>
-      <EmptyContainer>
-        <EmptyIcon>
-          <GiShoppingCart/>
-        </EmptyIcon>
-        <EmptyText>Your Cart is Empty</EmptyText>
-        <SubText>Looks like you haven’t added anything yet.</SubText>
-        <ShopButton onClick={() => navigate('/')}>Continue Shopping</ShopButton>
-      </EmptyContainer>
-    </CartContainer>
-  );
-}else{
+  if (loading) return <Spinner />;
+
+  if (cartItems.length === 0) {
+    return (
+      <CartContainer>
+        <EmptyContainer>
+          <EmptyIcon>
+            <GiShoppingCart />
+          </EmptyIcon>
+          <EmptyText>Your Cart is Empty</EmptyText>
+          <SubText>Looks like you haven’t added anything yet.</SubText>
+          <ShopButton onClick={() => navigate('/')}>Continue Shopping</ShopButton>
+        </EmptyContainer>
+      </CartContainer>
+    );
+  }
+
   return (
     <CartContainer>
       <CartTitle>Your Cart</CartTitle>
@@ -282,7 +291,7 @@ if (cartItems.length === 0) {
             </QuantityControls>
 
             <RemoveButton title="Remove from Cart">
-              <FaTrashAlt onClick={()=>{deleteCartItem(item._id)}}/>
+              <FaTrashAlt onClick={() => deleteCartItem(item._id)} />
             </RemoveButton>
           </CartItem>
         ))}
@@ -290,13 +299,10 @@ if (cartItems.length === 0) {
 
       <CartSummary>
         <Subtotal>Subtotal: ₹{total.toFixed(2)}</Subtotal>
-        <CheckoutButton to={'/place-order'}>Place Order</CheckoutButton>
+        <CheckoutButton to="/place-order">Place Order</CheckoutButton>
       </CartSummary>
     </CartContainer>
   );
-}
-
-
 };
 
 export default CartPage;

@@ -33,8 +33,8 @@ const CardWrapper = styled.div`
   background: ${({ theme }) => theme.white};
   border-radius: 16px;
   padding: 5rem 0rem 3rem;
- box-shadow: 3px -1px 24px #10b98152;
- background-color: #ffffff;
+background-color: #f0fdf4;
+ box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06), 0 4px 8px rgba(16, 185, 129, 0.12);
   position: relative;
   overflow: visible;
   text-align: center;
