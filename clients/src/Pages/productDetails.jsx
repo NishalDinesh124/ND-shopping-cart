@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate} from 'react-router-dom';
 import { FaStar } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { addToCartRoute } from '../Utils/APIRoutes';

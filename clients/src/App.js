@@ -13,6 +13,7 @@ import ViewProductsPage from './Pages/AdminPanel/ViewProducts';
 import AddProductsPage from './Pages/AdminPanel/AddProductsPage';
 import AdminOrdersPage from './Pages/AdminPanel/Orders';
 import AdminUsersPage from './Pages/AdminPanel/Users';
+import Footer from './Components/Footer';
 import { createGlobalStyle } from 'styled-components';
 import AdminLayout from './Components/Admin/AdminLayout';
 import AccountDetails from './Pages/AccountDetails';
@@ -77,6 +78,7 @@ const App = () => {
 
         </Routes>
       </BrowserRouter>
+      <Footer/>
     </AuthProvider></>
     
   );

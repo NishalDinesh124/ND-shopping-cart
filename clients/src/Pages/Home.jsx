@@ -6,6 +6,7 @@ import { getItemsRoute } from '../Utils/APIRoutes';
 import { useAuth } from '../Context/AuthContext';
 
 const Wrapper = styled.div`
+
   display: flex;
   font-family: Inter;
   background: ${({ theme }) => theme.colors.white};
