@@ -33,8 +33,9 @@ const CardWrapper = styled.div`
   background: ${({ theme }) => theme.white};
   border-radius: 16px;
   padding: 5rem 0rem 3rem;
-background-color: #f0fdf4;
- box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06), 0 4px 8px rgba(16, 185, 129, 0.12);
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06), 0 4px 8px rgba(16, 185, 129, 0.12);
   position: relative;
   overflow: visible;
   text-align: center;
@@ -116,16 +117,16 @@ const Button = styled(Link)`
 `;
 
 
-const ProductCard = ({ product}) => {
-  const {user} = useAuth()
+const ProductCard = ({ product }) => {
+  const { user } = useAuth()
   const navigate = useNavigate();
   const addToCart = async () => {
-    if(user){  
- const res = await axios.post(addToCartRoute, { product,user })
-    if (res.data.status) {
-      toast.info(res.data.msg)
-    }
-    }else{
+    if (user) {
+      const res = await axios.post(addToCartRoute, { product, user })
+      if (res.data.status) {
+        toast.info(res.data.msg)
+      }
+    } else {
       toast.info("Login first")
       navigate('/auth')
     }
@@ -144,8 +145,8 @@ const ProductCard = ({ product}) => {
         <Price>₹{product.price.toFixed(2)}</Price>
         <ButtonGroup>
 
-          <Button to={'/place-order'} state={{product}}>Buy Now</Button>
-          <Button to={'/view-product'} state={{product}}>View</Button>
+          <Button to={'/place-order'} state={{ product }}>Buy Now</Button>
+          <Button to={'/view-product'} state={{ product }}>View</Button>
         </ButtonGroup>
       </Info>
     </CardWrapper>
