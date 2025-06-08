@@ -69,7 +69,7 @@ const FilterButton = styled.button`
 const ProductGrid = styled.div`
   display: grid;
   overflow: auto;
-  max-height: 340px;
+  max-height: 56vh;
   padding: 5em 3em;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 4rem;
