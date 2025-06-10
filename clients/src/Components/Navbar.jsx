@@ -7,6 +7,8 @@ import { useAuth } from '../Context/AuthContext';
 import { IoHomeOutline, IoCartOutline, IoHeartOutline, IoPersonOutline } from "react-icons/io5";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
 
+
+/// === STYLED COMPONENTS === ///
 const NavbarContainer = styled.nav`
   font-family: Inter;
   background-color: ${({ theme }) => theme.colors.white};
@@ -126,10 +128,12 @@ const MenuButton = styled.button`
 `;
 
 const Navbar = () => {
+  /// importing global states ///
   const { user, search, setSearch } = useAuth();
+  /// === STATES === ///
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const toggleMenu = () => setMenuOpen((prev) => !prev);
+  const toggleMenu = () => setMenuOpen((prev) => !prev); /// NAVBAR TOGGLING
 
   return (
     <NavbarContainer>

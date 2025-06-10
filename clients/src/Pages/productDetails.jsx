@@ -7,6 +7,7 @@ import { addToCartRoute } from '../Utils/APIRoutes';
 import axios from 'axios';
 import { useAuth } from '../Context/AuthContext';
 
+/// === STYLED COMPONENTS === ///
 const Container = styled.div`
   max-width: 1100px;
   margin: 4rem auto;
@@ -134,6 +135,7 @@ const ProductDetailPage = () => {
 
   const product = state.product
 
+  /// === HANDLING ADD TO CART === ///
   const handleAddToCart =async () => {  
     if(user){  
  const res = await axios.post(addToCartRoute, { product,user })
@@ -147,6 +149,7 @@ const ProductDetailPage = () => {
 
   };
 
+  /// === REDIRECTING TO PLACE ORDER PAGE when BUY NOW IS CLICKED === ///
   const handleBuyNow = () => {
     toast.info("Redirecting to checkout")
     setTimeout(() => {

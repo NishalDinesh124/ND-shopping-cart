@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { deleteUserRoute, getAllUsersRoute } from "../../Utils/APIRoutes";
 import { useNavigate } from "react-router-dom";
 
+/// === STYLED COMPONENTS === ///
 const Container = styled.div`
   font-family: Inter;
   padding: 2rem;
@@ -67,9 +68,11 @@ const DeleteBtn = styled.button`
 `;
 
 const AdminUsersPage = () => {
+  /// === STATES === ///
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
 
+  /// === FETCHING ALL USERS FROM BACKEND === ///
   const fetchUsers = async () => {
     try {
       const res = await axios.get(getAllUsersRoute);
@@ -78,7 +81,7 @@ const AdminUsersPage = () => {
       toast.error("Failed to load users.");
     }
   };
-
+  /// === HANDLING USER DELETION === ///
   const handleDelete = async (userId) => {
     const confirm = window.confirm("Are you sure you want to delete this user?");
     if (!confirm) return;
@@ -93,7 +96,7 @@ const AdminUsersPage = () => {
 
   useEffect(() => {
     const admin = localStorage.getItem("cart-app-admin");
-    if (!admin) {
+    if (!admin) {               /// checking admin login status
       navigate("/admin/login");
       return;
     }

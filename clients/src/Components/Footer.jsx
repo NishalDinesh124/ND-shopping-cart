@@ -1,7 +1,7 @@
-// Footer.jsx
-
 import React from 'react';
 import styled from 'styled-components';
+
+/// === STYLED COMPONENTS === ///
 
 const FooterContainer = styled.footer`
   font-family: Inter;

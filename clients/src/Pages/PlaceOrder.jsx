@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+/// === STYLED COMPONENTS === ///
 const Wrapper = styled.div`
   display: flex;
   overflow: auto;
@@ -136,7 +137,10 @@ const PlaceOrderButton = styled.button`
 `;
 
 const PlaceOrder = () => {
+  /// === GLOBAL STATES === ///
   const { getCartItems, cartItems, total, user } = useAuth();
+
+  /// === STATES === ///
   const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState('cod');
   const location = useLocation();

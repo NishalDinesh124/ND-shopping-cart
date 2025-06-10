@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FaTachometerAlt, FaBoxOpen, FaShoppingCart, FaPlus,FaUsers, FaBars, FaTimes } from 'react-icons/fa';
+import { FaTachometerAlt, FaBoxOpen, FaShoppingCart, FaPlus, FaUsers, FaBars, FaTimes, FaHome } from 'react-icons/fa';
 import { GiShoppingCart } from "react-icons/gi";
 import { Link } from 'react-router-dom';
 
-/// === styled components ===///
+/// === STYLED COMPONENTS === ///
 const SidebarWrapper = styled.aside`
 font-family: Inter;
   width: 250px;
@@ -75,9 +75,11 @@ const NavItem = styled(Link)`
 `;
 
 const AdminSidebar = () => {
+  /// === STATES === ///
+
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleSidebar = () => setIsOpen(!isOpen);
+  const toggleSidebar = () => setIsOpen(!isOpen);  /// SIDEBAR TOGGLING
 
   return (
     <>
@@ -93,6 +95,7 @@ const AdminSidebar = () => {
           <NavItem to='/admin/products'><FaBoxOpen /> Products</NavItem>
           <NavItem to='/admin/users'><FaUsers /> Users</NavItem>
           <NavItem to='/admin/add-products'><FaPlus /> Add products</NavItem>
+           <NavItem to='/'><FaHome /> Users page</NavItem>
         </NavList>
       </SidebarWrapper>
     </>

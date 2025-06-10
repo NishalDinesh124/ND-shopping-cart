@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FiMenu, FiX } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
+/// === STYLED COMPONENTS === ///
 const NavbarContainer = styled.nav`
   font-family: Inter;
   overflow: hidden;
@@ -14,7 +15,7 @@ const NavbarContainer = styled.nav`
   align-items: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
-  z-index: 10; /* Make sure the navbar is above the content */
+  z-index: 10; 
 `;
 
 const NavLinks = styled.div.withConfig({
@@ -71,12 +72,15 @@ const MenuButton = styled.button`
 `;
 
 const Navbar = () => {
+  /// === STATES === ///
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const toggleMenu = () => setMenuOpen((prev) => !prev);
+  const toggleMenu = () => setMenuOpen((prev) => !prev); /// MENUBAR TOOGLING
 
-  const handleLogout=async()=>{
+
+  /// === HANDLING LOGOUT === ///
+  const handleLogout = async () => {
     toast.info("Logged out succesfully")
     localStorage.clear('cart-app-admin');
     navigate('/admin');
@@ -84,7 +88,7 @@ const Navbar = () => {
 
   return (
     <NavbarContainer>
-      
+
       <MenuButton onClick={toggleMenu}>
         {menuOpen ? <FiX /> : <FiMenu />}
       </MenuButton>

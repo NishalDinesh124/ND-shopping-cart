@@ -9,6 +9,8 @@ export const getCartRoute = `${host}/api/auth/get-cart-items`;
 export const updateCartRoute = `${host}/api/auth/update-cart`;
 export const deleteCartRoute = `${host}/api/auth/delete-cart`;
 export const placeOrderRoute = `${host}/api/auth/place-order`;
+
+/// === ONLINE PAYMENT ROUTE === ///
 export const paymentRoute = `${host}/api/payment/create-order`;
 
 

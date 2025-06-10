@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+/// === STYLED COMPONENTS === ///
 const PageWrapper = styled.div`
   background: ${({ theme }) => theme.colors.white};
   min-height: 100vh;
@@ -42,7 +43,7 @@ const AdminHome = () => {
   const navigate = useNavigate();
   useEffect(()=>{
    const admin = localStorage.getItem('cart-app-admin')
-   if(!admin){
+   if(!admin){                  /// checking admin login status
     navigate('/admin/login')
    }
   })

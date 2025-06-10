@@ -7,8 +7,7 @@ import { toast } from 'react-toastify';
 import { useAuth } from '../Context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 
-
-
+/// === STYLED COMPONENTS === ///
 const FloatingCartButton = styled.button`
   position: absolute;
   opacity: 0;
@@ -118,8 +117,12 @@ const Button = styled(Link)`
 
 
 const ProductCard = ({ product }) => {
+  /// importing global state from context ///
   const { user } = useAuth()
+
   const navigate = useNavigate();
+
+  /// === FUNCTION HANDLING ADD TO CART === ///
   const addToCart = async () => {
     if (user) {
       const res = await axios.post(addToCartRoute, { product, user })

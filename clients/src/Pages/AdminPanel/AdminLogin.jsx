@@ -1,10 +1,11 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { adminLoginRoute, adminRegisterRoute } from '../../Utils/APIRoutes';
+import { adminLoginRoute } from '../../Utils/APIRoutes';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
+/// === STYLED COMPONENTS === ///
 const AuthWrapper = styled.div`
   min-height: 100vh;
   display: flex;
@@ -62,39 +63,42 @@ const Button = styled.button`
   }
 `;
 
-const AdminLogin= () => {
+const AdminLogin = () => {
+  /// === STATES === ///
   const navigate = useNavigate();
-  const [admin,setAdmin] = useState([])
+  const [admin, setAdmin] = useState([])
 
-    const [formData, setFormData] = useState({
-      name: '',
-      email: '',
-      password: ''
-    });
-  
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    };
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: ''
+  });
 
-const handleSubmit = async (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+
+  /// === HANDLING ADMIN LOGIN SUBMISSION === ///
+  const handleSubmit = async (e) => {
     e.preventDefault();
-      const res = await axios.post(adminLoginRoute, { formData })
-      if (res.data.status) {
-        setFormData({
-          name: '',
-          email: '',
-          password: ''
-        })
-        console.log(res.data.adminfilter);
-        localStorage.setItem('cart-app-admin', JSON.stringify(res.data.adminfilter))
-        setAdmin(res.data.adminfilter)
-        toast.success("Login succesfull")
-        navigate('/admin')
-      }else{
-        console.log(res);
-        toast.error(res.data.msg)
-      }
+    const res = await axios.post(adminLoginRoute, { formData })
+    if (res.data.status) {
+      setFormData({
+        name: '',
+        email: '',
+        password: ''
+      })
+      console.log(res.data.adminfilter);
+      localStorage.setItem('cart-app-admin', JSON.stringify(res.data.adminfilter))
+      setAdmin(res.data.adminfilter)
+      toast.success("Login succesfull")
+      navigate('/admin')
+    } else {
+      console.log(res);
+      toast.error(res.data.msg)
+    }
 
   }
   return (

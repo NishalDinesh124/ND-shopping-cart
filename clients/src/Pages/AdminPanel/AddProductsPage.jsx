@@ -5,6 +5,7 @@ import { addProductsRoute } from '../../Utils/APIRoutes';
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom';
 
+/// === STYLED COMPONENTS === ///
 const Wrapper = styled.div`
   display: flex;
   font-family: Inter;
@@ -110,7 +111,7 @@ const AddProductsPage = () => {
   
   useEffect(() => {
     const admin = localStorage.getItem('cart-app-admin')
-    if (!admin) {
+    if (!admin) {                                      /// checking admni login status
       navigate('/admin/login')
     }
   })
@@ -119,6 +120,8 @@ const AddProductsPage = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+
+  /// === HANDLING PRODUCT SUBMISSION === ///
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Submitted Product:', formData);

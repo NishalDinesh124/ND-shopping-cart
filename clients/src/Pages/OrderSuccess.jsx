@@ -3,6 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaCheckCircle } from 'react-icons/fa';
 
+/// === STYLED COMPONENTS === ///
 const fadeInUp = keyframes`
   from {
     opacity: 0;
@@ -60,6 +61,7 @@ const HomeButton = styled(Link)`
 
 const OrderSuccessPage = () => {
   const navigate = useNavigate();
+  /// GETTING STATE PASSED THROUGH API CALL ///
    const location = useLocation();
   const call = location.state?.placeordercall;
   useEffect(()=>{

@@ -6,11 +6,13 @@ import axios from 'axios';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+
+  /// === GLOBAL STATES === ////
   const [user, setUser] = useState(null);
   const [search, setSearch] = useState('');
   const [cartItems, setCartItems] = useState([]);
 
-
+/// === FUNTION FOR GETTING USER FROM LOCAL STORAGE === ///
    const getCurrentUser = async () => {
   const localUser = JSON.parse(localStorage.getItem('cart-app-user'));
   if (localUser) {
@@ -44,11 +46,14 @@ const getCartItems = async (passedUser = user) => {
   useEffect(() => {
     getCurrentUser()
   }, [])
+
+  /// LOGIN HANDLER ///
   const login = (userData) => {
     localStorage.setItem('cart-app-user', JSON.stringify(userData))
     setUser(userData);
 
   };
+  /// LOGOUT HANDLER ///
   const logout = () => {
     setUser(null);
     localStorage.clear('cart-app-user')

@@ -6,6 +6,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom';
 
+/// === STYLED COMPONENTS === ///
 const AuthWrapper = styled.div`
   min-height: 100vh;
   display: flex;
@@ -76,7 +77,10 @@ const ToggleText = styled.p`
 `;
 
 const AuthPage = () => {
+  /// === GLOBAL STATES FROM CONTEXT === ///
   const { login } = useAuth()
+
+  /// === STATES === ///
   const navigate = useNavigate()
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
@@ -90,6 +94,7 @@ const AuthPage = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  /// === HANDLING USER LOGIN SUBMISSION === ///
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isLogin) { /// Here login works
@@ -103,7 +108,7 @@ const AuthPage = () => {
         })
         toast.success("Login succesfull")
         navigate('/')
-      }else{
+      } else {
         console.log(res);
         toast.error(res.data.msg)
       }
@@ -119,7 +124,7 @@ const AuthPage = () => {
         })
         toast.success("Registration succesfull")
         navigate('/')
-      }else{
+      } else {
         toast.error(res.data.msg);
       }
 

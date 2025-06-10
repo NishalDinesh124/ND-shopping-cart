@@ -4,6 +4,7 @@ import { useAuth } from '../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { IoPersonCircleOutline } from 'react-icons/io5';
 
+/// === STYLED COMPONENTS === ///
 const Container = styled.div`
   font-family: Inter;
   padding: 2rem;
@@ -48,15 +49,17 @@ const LogoutButton = styled.button`
 `;
 
 const AccountDetails = () => {
+  /// === GETTING GLOBAL STATES === ///
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  /// === HANDLING LOGOUT === ///
+  const handleLogout = () => { 
     logout();
     navigate('/');
   };
 
-  if (!user) {
+  if (!user) {       // checking user login status
     return <Container><p>Please login to view your account.</p></Container>;
   }
 

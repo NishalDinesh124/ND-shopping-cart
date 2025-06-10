@@ -13,6 +13,7 @@ const spin = keyframes`
   100% { transform: rotate(360deg); }
 `;
 
+/// === STYLED COMPONENTS === ///
 const Spinner = styled.div`
   border: 4px solid ${({ theme }) => theme.colors.lightGray};
   border-top: 4px solid ${({ theme }) => theme.colors.primary};
@@ -77,11 +78,15 @@ const ProductGrid = styled.div`
 `;
 
 const Home = () => {
+  ///=== GLOBAL STATES === ///
   const { search, user } = useAuth();
+
+  /// === STATES === ///
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [loading, setLoading] = useState(true);
 
+  /// === GETTING ALL ITEMS FROM BACKEND === ///
   const getItems = async () => {
     try {
       const res = await axios.get(getItemsRoute);
@@ -97,6 +102,7 @@ const Home = () => {
     getItems();
   }, []);
 
+  /// FILTERING PRODUCTS ///
   const filteredProducts = products.filter((p) => {
     const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
     const matchCategory =

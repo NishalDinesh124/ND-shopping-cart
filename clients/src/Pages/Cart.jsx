@@ -15,6 +15,7 @@ const spin = keyframes`
   100% { transform: rotate(360deg); }
 `;
 
+/// === STYLED COMPONENTS === ///
 const Spinner = styled.div`
   margin: 5rem auto;
   border: 4px solid ${({ theme }) => theme.colors.lightGray};
@@ -194,13 +195,15 @@ const CheckoutButton = styled(Link)`
 
 /// === Component === ///
 const CartPage = () => {
+  /// === GETTING GLOBAL STATES FROM CONTEXT === ///
   const { user, getCartItems, cartItems, setCartItems, total } = useAuth();
+  /// === STATE === ///
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const u = localStorage.getItem('cart-app-user');
-    if (!u) {
+    if (!u) {               /// checking user login status 
       navigate('/auth');
     } else {
       setLoading(true);
@@ -208,6 +211,7 @@ const CartPage = () => {
     }
   }, [navigate]);
 
+  /// HANDLING CART ITEM DELETION
   const deleteCartItem = async (itemId) => {
     const res = await axios.post(deleteCartRoute, { itemId, user: user._id });
     if (res.data.status) {
@@ -216,6 +220,7 @@ const CartPage = () => {
     }
   };
 
+  /// === HANDLING ITEM QUANTITY CHANGE IN BACKEND === ///
   const updateQuantity = debounce(async (itemId, newQty) => {
     try {
       const res = await axios.post(updateCartRoute, {
@@ -230,6 +235,7 @@ const CartPage = () => {
     }
   }, 900);
 
+  /// === UPDATING INCREMENT AND DECREMENT IN FRONTEND BEFORE CALLING BACKEND === ///
   const incrementQty = (itemId) => {
     const updatedQty = (cartItems.find((i) => i._id === itemId)?.quantity || 0) + 1;
     setCartItems((prev) =>

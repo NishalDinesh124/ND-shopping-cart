@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios'
 import { getProductsRoute } from '../../Utils/APIRoutes';
-import { toast } from 'react-toastify';
 
+/// === STYLED COMPONENTS === ///
 const Wrapper = styled.div`
   display: flex;
   font-family: Inter;
@@ -78,16 +78,17 @@ const ViewProductsPage = () => {
 
   useEffect(() => {
     const admin = localStorage.getItem('cart-app-admin')
-    if (!admin) {
+    if (!admin) {      /// checking admin login status
       navigate('/admin/login')
     }
   })
 
+  /// REDIRECTING TO ADD PRODUCTS PAGE ///
   const handleAddProduct = () => {
     navigate('/admin/add-products')
   };
 
-  /// === Getting products from backend ===///
+  /// === GETTING ALL PRODUCTS FROM BACKEND ===///
   const getProducts = async () => {
     const res = await axios.get(getProductsRoute)
     setProducts(res.data)
@@ -100,7 +101,6 @@ const ViewProductsPage = () => {
 
   return (
     <Wrapper>
-      {/* Sidebar component here if applicable */}
       <MainContent>
         <TitleWrapper>
           <Title>All Products</Title>
